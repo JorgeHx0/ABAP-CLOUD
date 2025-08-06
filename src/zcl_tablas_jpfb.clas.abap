@@ -600,7 +600,7 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
     INTO TABLE @DATA(LT_agencias).
 
 
-out->write( data = lt_agencias name = `Tabla original` ).
+    out->write( data = lt_agencias name = `Tabla original` ).
 
     LOOP AT lt_agencias ASSIGNING FIELD-SYMBOL(<fs_agencia>).
 
@@ -608,6 +608,7 @@ out->write( data = lt_agencias name = `Tabla original` ).
 
 
         <fs_agencia>-email_address = 'oculta@demo.com'.
+        <fs_agencia>-client = '222'.
 
 
 
@@ -620,7 +621,6 @@ out->write( data = lt_agencias name = `Tabla original` ).
     out->write( |\n| ).
 
     out->write( data = lt_agencias name = `Tabla modificada` ).
-
 
 
 
