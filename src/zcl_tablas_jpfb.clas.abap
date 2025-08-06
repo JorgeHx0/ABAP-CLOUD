@@ -481,7 +481,7 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
 *out->write( lt_flights ).
 *out->write( lv_index ).
 
-"forma moderna
+    "forma moderna
 *
 *SELECT FROM /dmo/flight
 *   FIELDS *
@@ -495,7 +495,7 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
 *"nº de líneas en la tabla
 *data(lv_num) = lines( lt_flights ).
 
-"LOOP AT
+    "LOOP AT
 
 * TYPES: BEGIN OF ty_persona,
 *             nombre TYPE string,
@@ -559,59 +559,73 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
 *
 *    ENDLOOP.
 
-"""""""""""""""2
+    """""""""""""""2
+*
+*SELECT FROM /dmo/flight
+*      FIELDS *
+*      WHERE carrier_id = 'LH'
+*      INTO TABLE @DATA(lt_flights).
+*
+*    DATA ls_flight TYPE /dmo/flight.
+*
+*    LOOP AT lt_flights ASSIGNING FIELD-SYMBOL(<fs_flight>) from 3 to 8.
+*
+*     <fs_flight>-currency_code = 'COP'.
+*    ENDLOOP.
+*    out->write( data = lt_flights name = `lt_flights` ).
 
-SELECT FROM /dmo/flight
-      FIELDS *
-      WHERE carrier_id = 'LH'
-      INTO TABLE @DATA(lt_flights).
+    "EJERCICIO
 
-    DATA ls_flight TYPE /dmo/flight.
+    "Anonimización de agencias de viajes
+    "La empresa de turismo internacional "DMO Travel Corp" almacena en la tabla
+    "/DMO/AGENCY información sobre sus agencias distribuidas por todo el mundo.
+    "Cada agencia contiene los siguientes datos: ID de cliente (CLIENT),
+    "ID de agencia (AGENCY_ID), nombre (NAME), dirección (STREET, POSTAL_CODE, CITY),
+    " país (COUNTRY_CODE), número de teléfono (PHONE_NUMBER), correo electrónico (EMAIL_ADDRESS)
+    "  y página web (WEB_ADDRESS).
+    "Por normativa de protección de datos, se ha solicitado anonimizar
+    "los correos electrónicos de todas aquellas agencias que cumplan simultáneamente
+    "las siguientes condiciones:
+    "No se encuentran en Alemania (es decir, su campo COUNTRY_CODE es distinto de 'DE')
+    "Su página web contiene la palabra 'tour'
+    "Leer todas las entradas de la tabla /DMO/AGENCY en una tabla interna.
+    "Recorrer la tabla interna y aplicar condiciones lógicas combinadas (AND, <>, CP, line_exists...).
+    "Modificar los correos electrónicos de las agencias que cumplan los criterios anteriores, asignándoles 'oculta@demo.com'.
+    "Mostrar el contenido de la tabla antes y después de la modificación usando out->write
 
-    LOOP AT lt_flights ASSIGNING FIELD-SYMBOL(<fs_flight>) from 3 to 8.
 
-     <fs_flight>-currency_code = 'COP'.
+
+    SELECT FROM /dmo/agency
+    FIELDS *
+    INTO TABLE @DATA(LT_agencias).
+
+
+out->write( data = lt_agencias name = `Tabla original` ).
+
+    LOOP AT lt_agencias ASSIGNING FIELD-SYMBOL(<fs_agencia>).
+
+      IF ( <fs_agencia>-web_address ) CP '*tour*' AND ( <fs_agencia>-country_code ) <> 'DE'.
+
+
+        <fs_agencia>-email_address = 'oculta@demo.com'.
+
+
+
+      ENDIF.
+
+
     ENDLOOP.
-    out->write( data = lt_flights name = `lt_flights` ).
-
- "EJERCICIO
-
-"Anonimización de agencias de viajes
-"La empresa de turismo internacional "DMO Travel Corp" almacena en la tabla
-"/DMO/AGENCY información sobre sus agencias distribuidas por todo el mundo.
-"Cada agencia contiene los siguientes datos: ID de cliente (CLIENT),
-"ID de agencia (AGENCY_ID), nombre (NAME), dirección (STREET, POSTAL_CODE, CITY),
-" país (COUNTRY_CODE), número de teléfono (PHONE_NUMBER), correo electrónico (EMAIL_ADDRESS)
-"  y página web (WEB_ADDRESS).
-"Por normativa de protección de datos, se ha solicitado anonimizar
-"los correos electrónicos de todas aquellas agencias que cumplan simultáneamente
- "las siguientes condiciones:
-"No se encuentran en Alemania (es decir, su campo COUNTRY_CODE es distinto de 'DE')
-"Su página web contiene la palabra 'tour'
-"Leer todas las entradas de la tabla /DMO/AGENCY en una tabla interna.
-"Recorrer la tabla interna y aplicar condiciones lógicas combinadas (AND, <>, CP, line_exists...).
-"Modificar los correos electrónicos de las agencias que cumplan los criterios anteriores, asignándoles 'oculta@demo.com'.
-"Mostrar el contenido de la tabla antes y después de la modificación usando out->write
-
-SELECT FROM /DMO/AGENCY
-FIELDS *
-INTO TABLE @DATA(LT_agencias).
-*out->write( lt_agencias ).
-
-DATA Ls_agencia TYPE /DMO/AGENCY.
-
-out->write( ls_agencia ).
 
 
+    out->write( |\n| ).
 
-*IF contains(  val = lt_agencia-web_address = 'tour' )  AND ls_agencia-country_code <> 'DE'.
-*endloop.
+    out->write( data = lt_agencias name = `Tabla modificada` ).
 
 
 
 
+  ENDMETHOD.
 
-     ENDMETHOD.
 
 ENDCLASS.
 
