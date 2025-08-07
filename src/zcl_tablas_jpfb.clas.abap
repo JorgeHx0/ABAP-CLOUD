@@ -392,14 +392,14 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
     "que tengamos en nuestra tabla interna.
 *
 * "creamos el tipo que asignamos a nuestra tabla
-    TYPES:BEGIN OF ty_flights,
-            carrier_id    TYPE /dmo/carrier_id,
-            connection_id TYPE /dmo/connection_id,
-            flight_date   TYPE /dmo/flight_date,
-          END OF ty_flights.
+*    TYPES:BEGIN OF ty_flights,
+*            carrier_id    TYPE /dmo/carrier_id,
+*            connection_id TYPE /dmo/connection_id,
+*            flight_date   TYPE /dmo/flight_date,
+*          END OF ty_flights.
 *
 * "crear la tabla
-    DATA: lt_my_flights TYPE STANDARD TABLE OF ty_flights.
+*    DATA: lt_my_flights TYPE STANDARD TABLE OF ty_flights.
 * "no haría falta crear estructura: Ls_my_flight type ty_flights.
 *
 *
@@ -608,9 +608,6 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
 
 
         <fs_agencia>-email_address = 'oculta@demo.com'.
-        <fs_agencia>-client = '222'.
-
-
 
       ENDIF.
 
@@ -622,6 +619,162 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
 
     out->write( data = lt_agencias name = `Tabla modificada` ).
 
+
+"FOR (SÓLO CLOUD)
+
+"FOR
+
+*types: BEGIN OF ty_flights,
+*       iduser type /dmo/customer_id,
+*       aircode type /dmo/carrier_id,
+*       flightnum type /dmo/connection_id,
+*       key type land1,
+*       seat type /dmo/plane_seats_occupied,
+*       flightdate type /dmo/flight_date,
+*       END OF TY_FLIGHTS.
+*
+*
+*
+*
+*
+*
+*DATA: lt_flights_info type TABLE of ty_flights,
+*      lt_my_flights type table of ty_flights.
+*
+
+"for con el until
+*
+*lt_my_flights = VALUE #( for i = 1 until i > 30 " se declara la variable i. también se puede usar WHILE
+*
+*        (     iduser = | { 123456 + i } - USER |
+*               aircode = 'LH'
+*               flightnum = 00001 + i
+*               key = 'US'
+*               seat = 0 + i
+*               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
+*
+*
+*out->write( data = lt_my_flights name = `lt_my_flights` ).
+
+ "ejemplo con WHILE
+* lt_my_flights = VALUE #( for i = 1 WHILE i <= 20
+*
+*        (     iduser = | { 123456 + i } - USER |
+*               aircode = 'LH'
+*               flightnum = 00001 + i
+*               key = 'US'
+*               seat = 0 + i
+*               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
+*
+*
+*out->write( data = lt_my_flights name = `lt_my_flights` ).
+
+"crear una estructura a partir de una tabla
+
+"for anidado->unimos dos tablas en una nueva tabla sorted
+
+TYPES: BEGIN OF ty_flights,
+             aircode     TYPE /dmo/carrier_id,
+             flightnum   TYPE /dmo/connection_id,
+             flightdate  TYPE /dmo/flight_date,
+             flightprice TYPE /dmo/flight_price,
+             currency    TYPE /dmo/currency_code,
+           END OF ty_flights."creamos los tipos para la nueva tabla conjunta que vamos a crear
+
+
+    SELECT FROM /dmo/flight
+         FIELDS *
+         INTO TABLE @DATA(lt_flights_type). "extraemos de la tabla externa a una nueva tabla interna
+
+    SELECT FROM /dmo/booking_m
+       FIELDS carrier_id, connection_id , flight_price, currency_code
+       INTO TABLE @DATA(lt_airline)
+       UP TO 20 ROWS. "lo mismo desde otra tabla, pero limitándonos a 20 filas
+
+    DATA lt_final TYPE SORTED TABLE OF ty_flights WITH NON-UNIQUE KEY flightprice.
+    "creamos una nueva tabla sorted con una clave no única, que va a ser el precio. usa los tipos de ty_flights
+
+
+ "damos valores a la nueva tabla
+    lt_final = VALUE #(
+     FOR ls_flight_type IN lt_flights_type WHERE ( carrier_id = 'AA' )
+     "bucle externo: recorre lt_flights_type filtrando solo los vuelos cuyo carrier es AA
+
+      FOR ls_airline IN lt_airline WHERE (  carrier_id = ls_flight_type-carrier_id )
+ "bucle interno. recorre la tabla lt_airline y filtra donde coincide carrier_id y el carrier_id que hemos seleccionado de la otra tabla
+
+                         ( aircode     = ls_flight_type-carrier_id
+                           flightnum   = ls_flight_type-connection_id
+                           flightdate  = ls_flight_type-flight_date
+                           flightprice = ls_airline-flight_price
+                           currency    = ls_airline-currency_code )  ).
+
+ "las estructuras se han declarado dentro del FOR
+
+    out->write( data = lt_flights_type name = `lt_flights_type` ).
+    out->write( |\n| ).
+    out->write( data = lt_airline name = `lt_airline` ).
+    out->write( |\n| ).
+    out->write( data = lt_final name = `tabla generada con las dos anteriores` ).
+
+
+    "select "normal"
+
+    SELECT FROM /dmo/flight
+          FIELDS *
+          WHERE carrier_id = 'LH'
+         INTO TABLE @DATA(lt_flights).
+
+
+"select a una tabla interna (no aconsejado hacer )
+    SELECT carrier_id, connection_id, flight_date
+    FROM @lt_flights AS lt
+    INTO TABLE @DATA(lt_flights_copy).
+
+    out->write( data = lt_flights name = `lt_flights` ).
+    out->write( data = lt_flights_copy name = `lt_flights_copy` ).
+
+
+    "sentencia SORT
+    "ordenar tablas ( no tiene sentido para las tablas de tipo shorted) si para las estandar y las hash
+
+out->write( data = lt_flights_copy name = `lt_flights_copy` ).
+sort lt_flights_copy by flight_date DESCENDING connection_id ASCENDING.
+out->write( data = lt_flights_copy name = `lt_flights_copy ordenado` ).
+
+
+
+"MODIFICAR REGISTROS (FORMA CLÁSICA)
+
+out->write( data = lt_flights name = 'ANTES /LT_FLIGHTS' ).
+
+*LOOP AT lt_flights into data(ls_flight).
+*ls_flight-flight_date = cl_abap_context_info=>get_system_date(  ).
+*
+*MODIFY lt_flights from ls_flight INDEX 2.
+*
+*out->write( data = lt_flights name = 'DESPUÉS /LT_FLIGHTS' ).
+
+"con condicional
+LOOP AT lt_flights into data(ls_flight).
+
+IF ls_flight-flight_date > '20260101'.
+ls_flight-flight_date = cl_abap_context_info=>get_system_date(  ).
+
+MODIFY lt_flights from ls_flight INDEX 2.
+
+ENDIF.
+
+ENDLOOP.
+
+out->write( data = lt_flights name = 'DESPUÉS /LT_FLIGHTS' ).
+
+
+
+
+
+
+"MODIFICAR REGISTROS (CLOUD)
 
 
   ENDMETHOD.
