@@ -744,7 +744,7 @@ out->write( data = lt_flights_copy name = `lt_flights_copy ordenado` ).
 
 
 
-"MODIFICAR REGISTROS (FORMA CLÁSICA)
+"MODIFICAR REGISTROS (FORMA CLÁSICA)-no importante
 
 out->write( data = lt_flights name = 'ANTES /LT_FLIGHTS' ).
 
@@ -758,8 +758,8 @@ out->write( data = lt_flights name = 'ANTES /LT_FLIGHTS' ).
 "con condicional
 LOOP AT lt_flights into data(ls_flight).
 
-IF ls_flight-flight_date > '20260101'.
-ls_flight-flight_date = cl_abap_context_info=>get_system_date(  ).
+IF ls_flight-connection_id > '0401'.
+ls_flight-connection_id = '4000'.
 
 MODIFY lt_flights from ls_flight INDEX 2.
 
@@ -775,9 +775,235 @@ out->write( data = lt_flights name = 'DESPUÉS /LT_FLIGHTS' ).
 
 
 "MODIFICAR REGISTROS (CLOUD)
+out->write( data = lt_flights name = `ANTES / lt_flights` ).
+*
+*    LOOP AT lt_flights INTO DATA(ls_flight).
+*      IF ls_flight-connection_id > '0401'.
+*        "ls_flight-connection_id = cl_abap_context_info=>get_system_date(  ).
+*
+*        MODIFY lt_flights FROM VALUE #(  connection_id = '4000'
+*                                           carrier_id = 'XX'
+*                                           plane_type_id   = 'YY'  ) TRANSPORTING carrier_id plane_type_id connection_id .
+*      ENDIF.
+*    ENDLOOP.
+*    out->write( data = lt_flights name = `DESPUES / lt_flights` ).
 
 
-  ENDMETHOD.
+"""" eliminar registros
+
+*DATA: lt_flights_struc TYPE STANDARD TABLE OF /dmo/airport,
+*      ls_flights_struc TYPE /dmo/airport.
+*
+*
+*SELECT FROM /dmo/airport
+*  FIELDS *
+*  WHERE country EQ 'US'
+*  INTO TABLE @lt_flights_struc.
+*
+*
+*IF sy-subrc EQ 0.
+*  out->write( data = lt_flights_struc name = `BEFORE lt_flights_struc` ).
+*
+*  " Recorremos la tabla para borrar ciertos aeropuertos
+*  LOOP AT lt_flights_struc INTO ls_flights_struc.
+*
+*    " Si el ID del aeropuerto es JFK, BNA o BOS, lo eliminamos
+*    IF ls_flights_struc-airport_id = 'JFK' or
+*       ls_flights_struc-airport_id = 'BNA' OR
+*       ls_flights_struc-airport_id = 'BOS'.
+*
+*      " Borramos el registro de la tabla interna
+*      DELETE TABLE lt_flights_struc FROM ls_flights_struc.
+*
+*    ENDIF.
+*
+*  ENDLOOP.
+*
+*ENDIF.
+*
+*
+*out->write( |\n| ).
+*
+*
+*out->write( data = lt_flights_struc name = `AFTER lt_flights_struc` ).
+*
+*""""""""
+*
+*DELETE lt_flights_struc index 2.
+*out->write( data = lt_flights_struc name = `AFTER lt_flights_struc` ).
+*"""
+*DELETE lt_flights_struc from 3 to 6.
+*out->write( data = lt_flights_struc name = `AFTER lt_flights_struc` ).
+" campos nulos
+" DELETE lt_flights_struc where city is initial.
+"" campos duplicados
+"delete ADJACENT DUPLICATES FROM lt_flights_struc COMPARING airport_id.
+
+*clear lt_flights_struc.
+*Free lt_flights_struc.
+
+
+"EJERCICIO
+"Crea una tabla interna con los datos de 15 vuelos simulados. Cada vuelo tendrá:
+"Un ID de usuario (iduser)
+"Un código de aerolínea (aircode)
+"Un número de vuelo (flightnum)
+"Una clave de país (key)
+"Número de asientos ocupados (seat)
+"Fecha del vuelo (flightdate)
+"Utiliza una expresión FOR con UNTIL para crear los datos dinámicamente.
+
+
+*lt_my_flights = VALUE #( for i = 1 until i > 30 " se declara la variable i. también se puede usar WHILE
+*
+*        (     iduser = | { 123456 + i } - USER |
+*               aircode = 'LH'
+*               flightnum = 00001 + i
+*               key = 'US'
+*               seat = 0 + i
+*               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
+
+*TYPES: BEGIN OF ty_clave_pais,
+*       num_reg type i,
+*       clave_pais type string,
+*       end of ty_clave_pais.
+*
+*       TYPES: Ty_tabla_clave_pais TYPE STANDARD TABLE OF ty_clave_pais WITH EMPTY KEY.
+*       data lt_clave_pais type ty_tabla_clave_pais.
+*       ls_clave_pais = VALUE #( num_reg = 1 clave_pais =  ).
+*
+*    INSERT ls_libro INTO Lt_libros INDEX 1.
+
+
+
+
+*ls_clave_pais type ty_clave_pais.
+*
+
+
+
+
+TYPES: BEGIN OF ty_vuelos,
+iduser TYPE i,
+aircode type /dmo/carrier_id,
+flightnum type i,
+key type string,
+seat type /dmo/plane_seats_occupied,
+flightdate type /dmo/flight_date,
+end of ty_vuelos.
+
+TYPES: Ty_tabla_vuelos TYPE STANDARD TABLE OF ty_vuelos WITH EMPTY KEY.
+DATA lt_vuelos TYPE ty_tabla_vuelos.
+DATA ls_vuelos type ty_vuelos.
+
+
+lt_vuelos = VALUE #( for i = 1 until i > 15 "
+
+        (     iduser = 0400 + i
+               aircode = 400 + i
+               flightnum = 00001 + i
+               key = 'ZZ'
+               seat = 10 + i
+               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
+
+
+
+
+out->write( data = lt_vuelos name = `ejer 1` ).
+
+
+    LOOP AT lt_vuelos INTO ls_vuelos.
+
+
+    IF ls_vuelos-aircode < '0405'.
+
+           DELETE TABLE lt_vuelos FROM ls_vuelos.
+           endif.
+
+
+endloop.
+out->write( data = lt_vuelos name = `ejer 2` ).
+
+
+*    LOOP AT lt_vuelos ASSIGNING FIELD-SYMBOL(<fs_vuelos>).
+*
+*      IF <fs_vuelos>-seat > 20.
+*
+*        <fs_vuelos>-aircode = 'UPD'.
+*
+*        <fs_vuelos>- ect
+*
+*
+*
+*
+*
+*     ENDIF.
+*
+*
+*
+*  ENDLOOP.
+
+LOOP AT lt_vuelos INTO ls_vuelos.
+IF ls_vuelos-seat > 20.
+ls_vuelos-aircode = 'UPD'.
+
+MODIFY lt_vuelos from ls_vuelos INDEX ( sy-tabix ).
+
+endif.
+
+endloop.
+
+out->write( data = lt_vuelos name = `ejer 3` ).
+
+*"TABLAS DE RANGOS
+* sign
+*    I  = lo quiero
+*    E  = no lo quiero
+*
+*option dice el tipo de comparacion
+*    EQ - =  / igual a
+*    NE - diferente de  <>
+*    GT - mayor que >
+*    LT - Menor que <
+*    BT - entre
+**    CP - "like"
+**
+**
+**low - El valor minimo o valor exacto
+**
+**high - el valor maximo
+*
+*DATA lr_seats type range of /dmo/plane_seats_occupied.
+*
+*"quiero vuelos con asiesntos entre 50 y 100
+*append value #( sign = 'I' option = 'BT' low = 50 high = 100 ) to lr_seats.
+*"tambien quiero vuelos exactamente con 150 asisentos
+*append value #( sign = 'I' option = 'EQ' low = 150 ) to lr_seats.
+*"pero no quiero vuelos con menos de 10 asientos
+*append value #( sign = 'E' option = 'EQ' low = 150 ) to lr_seats.
+*
+*data: lt_flights type table of /dmo/flight.
+*
+*select *
+*from /dmo/flight
+*where seats_occupied in @lr_seats
+*into table @lt_flights.
+*
+*loop at lt_flights into Data(ls_flight).
+*
+*out->write( |vuelos: { ls_flight-carrier_id } Asientos ocupados: { ls_flight-seats_occupied } | ).
+*ENDLOOP.
+
+
+"SOLUCIÓN PROFE
+
+
+
+
+ ENDMETHOD.
+
+
+
 
 
 ENDCLASS.
