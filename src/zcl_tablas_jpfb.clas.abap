@@ -967,32 +967,32 @@ out->write( data = lt_vuelos name = `ejer 3` ).
 *    LT - Menor que <
 *    BT - entre
 **    CP - "like"
-**
-**
-**low - El valor minimo o valor exacto
-**
-**high - el valor maximo
 *
-*DATA lr_seats type range of /dmo/plane_seats_occupied.
 *
-*"quiero vuelos con asiesntos entre 50 y 100
-*append value #( sign = 'I' option = 'BT' low = 50 high = 100 ) to lr_seats.
-*"tambien quiero vuelos exactamente con 150 asisentos
-*append value #( sign = 'I' option = 'EQ' low = 150 ) to lr_seats.
-*"pero no quiero vuelos con menos de 10 asientos
-*append value #( sign = 'E' option = 'EQ' low = 150 ) to lr_seats.
+*low - El valor minimo o valor exacto
 *
-*data: lt_flights type table of /dmo/flight.
-*
-*select *
-*from /dmo/flight
-*where seats_occupied in @lr_seats
-*into table @lt_flights.
-*
-*loop at lt_flights into Data(ls_flight).
-*
-*out->write( |vuelos: { ls_flight-carrier_id } Asientos ocupados: { ls_flight-seats_occupied } | ).
-*ENDLOOP.
+*high - el valor maximo
+
+DATA lr_seats type range of /dmo/plane_seats_occupied.
+
+"quiero vuelos con asiesntos entre 50 y 100
+append value #( sign = 'I' option = 'BT' low = 50 high = 100 ) to lr_seats.
+"tambien quiero vuelos exactamente con 150 asisentos
+append value #( sign = 'I' option = 'EQ' low = 150 ) to lr_seats.
+"pero no quiero vuelos con menos de 10 asientos
+append value #( sign = 'E' option = 'EQ' low = 150 ) to lr_seats.
+
+data: lt_flights2 type table of /dmo/flight.
+
+select *
+from /dmo/flight
+where seats_occupied in @lr_seats
+into table @lt_flights.
+
+loop at lt_flights2 into Data(ls_flight2).
+
+out->write( |vuelos: { ls_flight-carrier_id } Asientos ocupados: { ls_flight-seats_occupied } | ).
+ENDLOOP.
 
 
 "SOLUCIÓN PROFE

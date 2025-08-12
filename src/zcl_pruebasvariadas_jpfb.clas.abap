@@ -337,6 +337,149 @@ out->write( 'no se encuentra el vuelo' ).
 
 endif.
 
+
+"CREACIÓN TABLA CON DATOS SIMULADOS
+"Crea una tabla interna con los datos de 15 vuelos simulados. Cada vuelo tendrá:
+"Un ID de usuario (iduser)
+"Un código de aerolínea (aircode)
+"Un número de vuelo (flightnum)
+"Una clave de país (key)
+"Número de asientos ocupados (seat)
+"Fecha del vuelo (flightdate)
+"Utiliza una expresión FOR con UNTIL para crear los datos dinámicamente.
+
+
+"extraemos una lista de códigos de aerolíneas
+SELECT carrier_id
+FROM /dmo/carrier
+INTO TABLE @DATA(lt_lista_carrier).
+
+out->write( lt_lista_carrier ).
+
+"creamos una nueva tabla que relacione aerolíneas y país
+
+TYPES: BEGIN OF ty_aerolineas_pais,
+aerolineas type /dmo/carrier-carrier_id,
+pais type string,
+end of ty_aerolineas_pais.
+
+DATA: lt_aerolineas_pais TYPE STANDARD TABLE OF ty_aerolineas_pais WITH EMPTY KEY,
+      ls_aerolineas_pais TYPE ty_aerolineas_pais.
+
+LOOP AT lt_lista_carrier ASSIGNING FIELD-SYMBOL(<fs_1>).
+ls_aerolineas_pais-aerolineas  = <fs_1>-carrier_id. "
+
+ case <fs_1>-carrier_id.
+ when 'AA'.
+  ls_aerolineas_pais-pais = 'US'.
+  when 'AC'.
+  ls_aerolineas_pais-pais = 'CA'.
+  when 'AF'.
+  ls_aerolineas_pais-pais = 'FR'.
+   when 'AF'.
+  ls_aerolineas_pais-pais = 'IT'.
+   when 'BA'.
+  ls_aerolineas_pais-pais = 'GB'.
+   when 'FJ'.
+  ls_aerolineas_pais-pais = 'FJ'.
+   when 'CO'.
+  ls_aerolineas_pais-pais = 'GR'.
+   when 'DL'.
+  ls_aerolineas_pais-pais = 'US'.
+   when 'LG'.
+  ls_aerolineas_pais-pais = 'DE'.
+   when 'NG'.
+  ls_aerolineas_pais-pais = 'IQ'.
+WHEN OTHERS.
+  ls_aerolineas_pais-pais = 'ZZ'.
+
+  endcase.
+  APPEND ls_aerolineas_pais TO lt_aerolineas_pais.
+ENDLOOP.
+
+out->write( lt_aerolineas_pais ).
+
+"extraer una aereolínea y su correspondiente país de forma aleatoria
+
+
+"creación de tabla
+
+*TYPES: BEGIN OF Ty_vuelos_simulados,
+*       iduser type /dmo/customer_id,
+*       aircode type /dmo/carrier_id,
+*       flightnum  TYPE /dmo/connection_id,
+*       key        TYPE land1,
+*       seat       TYPE /dmo/plane_seats_occupied,
+*       flightdate TYPE /dmo/flight_date,
+*
+*       end of Ty_vuelos_simulados.
+
+*  data lt_vuelos_simulados TYPE TABLE OF ty_vuelos_simulados.
+*data ls_vuelo TYPE ty_vuelos_simulados.
+*
+*       do 19 times.
+
+*DATA(lv_aleatorio) = cl_abap_random_int=>create(  seed = cl_abap_random=>seed(  ) min = 1 max = 19 )->get_next(  ).
+*data(lv_vueltas) = sy-index.
+*       Ls_vuelo = VALUE #(
+*
+*      iduser =  400 + lv_vueltas
+*       aircode = lt_aerolineas_pais[ lv_aleatorio ]-aerolineas
+*       flightnum  = |04{ lv_vueltas WIDTH = 2 PAD = '0' }|
+*       key = lt_aerolineas_pais[ lv_aleatorio ]-pais
+*       seat = lv_vueltas + 10
+*      flightdate = cl_abap_context_info=>get_system_date( ) + lv_vueltas.
+*
+*
+*
+*
+*       enddo.
+
+
+TYPES: BEGIN OF ty_vuelos_simulados,
+         iduser     TYPE /dmo/customer_id,
+         aircode    TYPE /dmo/carrier_id,
+         flightnum  TYPE /dmo/connection_id,
+         key        TYPE land1,
+         seat       TYPE /dmo/plane_seats_occupied,
+         flightdate TYPE /dmo/flight_date,
+       END OF ty_vuelos_simulados.
+
+DATA: lt_vuelos_simulados TYPE TABLE OF ty_vuelos_simulados.
+
+DO 19 TIMES.
+  DATA(lv_aleatorio) = cl_abap_random_int=>create(
+                         seed = cl_abap_random=>seed( )
+                         min  = 1
+                         max  = 19 )->get_next( ).
+
+  DATA(lv_vueltas) = sy-index.
+
+  APPEND VALUE ty_vuelos_simulados(
+    iduser     = 400 + lv_vueltas
+    aircode    = lt_aerolineas_pais[ lv_aleatorio ]-aerolineas
+    flightnum  = |04{ lv_vueltas WIDTH = 2 PAD = '0' }|
+    key        = lt_aerolineas_pais[ lv_aleatorio ]-pais
+    seat       = lv_vueltas + 10
+    flightdate = cl_abap_context_info=>get_system_date( ) + lv_vueltas
+  ) TO lt_vuelos_simulados.
+ENDDO.
+
+
+out->write( lt_vuelos_simulados ).
+
+*       ) )
+**       FOR ... UNTIL
+*    lt_flights = VALUE #( FOR i = 1 UNTIL i > 15
+*      ( iduser     = |{ 123000 + i }|         " 123001, 123002, ...
+*        aircode    = 'LH'
+*        flightnum  = |04{ i WIDTH = 2 PAD = '0' }|
+*        key        = 'US'
+*        seat       = i + 10
+*        flightdate = cl_abap_context_info=>get_system_date(
+
+
+
 ENDMETHOD.
 
 ENDCLASS.
