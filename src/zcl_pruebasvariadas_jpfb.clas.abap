@@ -478,7 +478,18 @@ out->write( lt_vuelos_simulados ).
 *        seat       = i + 10
 *        flightdate = cl_abap_context_info=>get_system_date(
 
+""""
 
+*"crea una variable/objteo que apunta a un objeto de tipo ZCL_CONSTRUCTORES_PUNTEROS_JPF
+*data(lo_employee) = NEW ZCL_CONSTRUCTORES_PUNTEROS_JPF( iv_age = 22
+*iv_name = 'Laura' ).
+
+"reserva memoria par aun nuevo objeto
+"llena automáticamente el constructor de esa clase pasando los importes
+"devuelve una referencia al objeto creado
+
+*out->write(  lo_employee->lv_age ).
+*out->write(  lo_employee->lv_name ).
 
 ENDMETHOD.
 
