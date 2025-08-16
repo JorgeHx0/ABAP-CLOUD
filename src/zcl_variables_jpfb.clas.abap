@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_variables_jpfb IMPLEMENTATION.
+CLASS ZCL_VARIABLES_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 *
@@ -120,7 +121,4 @@ DATA(lv_dec) = '10.245'.
 out->write( lv_dec ). "también da problemas
 
   ENDMETHOD.
-
 ENDCLASS.
-
-

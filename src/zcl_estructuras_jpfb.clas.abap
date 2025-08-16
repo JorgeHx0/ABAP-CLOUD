@@ -10,7 +10,8 @@ CLASS zcl_estructuras_jpfb DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_estructuras_jpfb IMPLEMENTATION.
+
+CLASS ZCL_ESTRUCTURAS_JPFB IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
@@ -174,5 +175,4 @@ into corresponding fields of table @ls_flight_info-lt_flights.
 out->write( data = ls_flight_info name = 'ls_flight_info').
 
       endmethod.
-
 ENDCLASS.

@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_simbolesdetexto_jpfb IMPLEMENTATION.
+CLASS ZCL_SIMBOLESDETEXTO_JPFB IMPLEMENTATION.
+
 
 METHOD if_oo_adt_classrun~main. """""
 

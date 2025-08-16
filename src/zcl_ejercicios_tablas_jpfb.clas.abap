@@ -9,7 +9,10 @@ CLASS zcl_ejercicios_tablas_jpfb DEFINITION
   PRIVATE SECTION.
 ENDCLASS.
 
-CLASS zcl_ejercicios_tablas_jpfb IMPLEMENTATION.
+
+
+CLASS ZCL_EJERCICIOS_TABLAS_JPFB IMPLEMENTATION.
+
 
 METHOD if_oo_adt_classrun~main.
 
@@ -296,23 +299,43 @@ DATA: lt_flights TYPE ty_tabla_flights,
                seat = 0 + i
                flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
 
-out->write( lt_flights ).
 
 lt_flights_info = value #( base lt_flights ( ) ).
 
-out->write( data = lt_flights name = 'lt_flights_info' ).
+out->write( data = lt_flights name = 'lt_flight' ).
 
 
+DATA lv_valor_flightnum type i.
+LOOP AT lt_flights_info into data(ls_estructura).
+*lv_valor_flightnum = sy-tabix * 10.
 
-Lt_flights_info = VALUE #( FOR i = 16 THEN i + 1 UNTIL i > 30
-(     iduser = | { 1234 + i } - USER |
-               aircode = 'CL'
-               flightnum = 0000 + 10 * i
-               key = 'COP'
-               seat = 0 + i
-               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
 
-out->write( data = lt_flights name = 'lt_flights_info2' ).
+MODIFY lt_flights_info FROM VALUE #(  aircode = 'CL'
+                                          flightnum = lv_valor_flightnum
+                                           key  = 'COP'  ) TRANSPORTING aircode flightnum key.
+"otra forma sugerido por chat-gpt
+"lt_flights_info[ sy-tabix ]-aircode = 'CL'.
+"lt_flights_info[ sy-tabix ]-flightnum = sy-tabix * 10.
+"lt_flights_info[ sy-tabix ]-key = 'COP'.
+
+
+endloop.
+
+data lv_linea_vacia type i.
+lv_linea_vacia =  lines( lt_flights_info ).
+
+delete lt_flights_info INDEX lv_linea_vacia .
+
+out->write( data = lt_flights_info name = 'lt_flights_info (modificado)' ).
+
+*Lt_flights_info = VALUE #( FOR i = 16 THEN i + 1 UNTIL i > 30
+*(     iduser = | { 1234 + i } - USER |
+*               aircode = 'CL'
+*               flightnum = 0000 + 10 * i
+*               key = 'COP'
+*               seat = 0 + i
+*               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
+
+*out->write( data = lt_flights name = 'lt_flights_info2' ).
 endmethod.
-
 ENDCLASS.

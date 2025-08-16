@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_ejercicio_do_jpfb IMPLEMENTATION.
+CLASS ZCL_EJERCICIO_DO_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -109,5 +110,4 @@ CLASS zcl_ejercicio_do_jpfb IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.

@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_constantes_jpfb IMPLEMENTATION.
+CLASS ZCL_CONSTANTES_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -33,6 +34,4 @@ CLASS zcl_constantes_jpfb IMPLEMENTATION.
 
 
   ENDMETHOD.
-
-
 ENDCLASS.

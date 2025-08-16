@@ -10,7 +10,9 @@ CLASS zcl_dia_repaso_jpfb DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_dia_repaso_jpfb IMPLEMENTATION.
+
+CLASS ZCL_DIA_REPASO_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -172,5 +174,4 @@ out->write( |nombre del pasajero: { lv_pasajero } | ).
 out->write( lt_pasajeros2 ).
 
   ENDMETHOD.
-
 ENDCLASS.

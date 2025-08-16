@@ -10,7 +10,9 @@ CLASS zcl_tablas_jpfb DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_tablas_jpfb IMPLEMENTATION.
+
+CLASS ZCL_TABLAS_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -1147,13 +1149,4 @@ CLASS zcl_tablas_jpfb IMPLEMENTATION.
 *
 
  ENDMETHOD.
-
-
-
-
-
 ENDCLASS.
-
-
-
-

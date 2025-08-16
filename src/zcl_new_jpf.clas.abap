@@ -21,10 +21,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_new_jpf IMPLEMENTATION.
-METHOD if_oo_adt_classrun~main.
+CLASS ZCL_NEW_JPF IMPLEMENTATION.
 
-ENDMETHOD.
 
 METHOD constructor.
 
@@ -35,10 +33,7 @@ lv_name = iv_name. "asigna el valor recibido a la variable lv_name
 Endmethod.
 
 
+METHOD if_oo_adt_classrun~main.
 
-
-
-
-
-
+ENDMETHOD.
 ENDCLASS.

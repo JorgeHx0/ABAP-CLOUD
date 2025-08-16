@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_funcionescadena_jpfb IMPLEMENTATION.
+CLASS ZCL_FUNCIONESCADENA_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -392,6 +393,4 @@ out->write(  lv_count ).
 
 
   ENDMETHOD.
-
-
 ENDCLASS.

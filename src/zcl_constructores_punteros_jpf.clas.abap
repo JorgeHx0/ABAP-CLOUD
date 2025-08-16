@@ -20,7 +20,10 @@ CLASS zcl_constructores_punteros_jpf DEFINITION
   PRIVATE SECTION.
 ENDCLASS.
 
-CLASS zcl_constructores_punteros_jpf IMPLEMENTATION.
+
+
+CLASS ZCL_CONSTRUCTORES_PUNTEROS_JPF IMPLEMENTATION.
+
 
 METHOD constructor.
 *
@@ -29,6 +32,7 @@ lv_name = iv_name. "asigna el valor recibido a la variable lv_name
 
 
 Endmethod.
+
 
 METHOD if_oo_adt_classrun~main.
 

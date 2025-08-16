@@ -9,7 +9,11 @@ CLASS zcl_ejerciciosestructuras_jpfb DEFINITION
   PRIVATE SECTION.
 ENDCLASS.
 
-CLASS zcl_ejerciciosestructuras_jpfb IMPLEMENTATION.
+
+
+CLASS ZCL_EJERCICIOSESTRUCTURAS_JPFB IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 
 *31-7 CREACIÓN DE ESTRUCTURAS

@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_case_endcase_jpfb IMPLEMENTATION.
+CLASS ZCL_CASE_ENDCASE_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -101,10 +102,4 @@ ENDCASE.
 
 
   ENDMETHOD.
-
 ENDCLASS.
-
-
-
-
-

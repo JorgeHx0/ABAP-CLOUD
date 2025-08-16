@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_do_enddo_jpfb IMPLEMENTATION.
+CLASS ZCL_DO_ENDDO_JPFB IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -47,6 +48,4 @@ out->write(  'hola check' ).
 ENDDO.
 
   ENDMETHOD.
-
 ENDCLASS.
-

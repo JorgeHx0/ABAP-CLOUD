@@ -11,7 +11,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_pruebasvariadas_jpfb IMPLEMENTATION.
+CLASS ZCL_PRUEBASVARIADAS_JPFB IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 
 
@@ -492,17 +494,4 @@ out->write( LO_EMPLOYEE->lv_name ).
 
 
 ENDMETHOD.
-
 ENDCLASS.
-
-
-
-
-
-
-
-
-
-
-
-

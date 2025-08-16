@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_ejer_cadena_jpfb IMPLEMENTATION.
+CLASS ZCL_EJER_CADENA_JPFB IMPLEMENTATION.
+
 
 METHOD if_oo_adt_classrun~main.
 
@@ -61,7 +62,4 @@ out->write( |Caracteres en la frase: { strlen( lv_texto ) }| ).
 
 
 ENDMETHOD.
-
-
 ENDCLASS.
-
