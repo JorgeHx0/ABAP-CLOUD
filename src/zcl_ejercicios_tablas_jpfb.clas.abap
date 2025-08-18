@@ -9,10 +9,7 @@ CLASS zcl_ejercicios_tablas_jpfb DEFINITION
   PRIVATE SECTION.
 ENDCLASS.
 
-
-
-CLASS ZCL_EJERCICIOS_TABLAS_JPFB IMPLEMENTATION.
-
+CLASS zcl_ejercicios_tablas_jpfb IMPLEMENTATION.
 
 METHOD if_oo_adt_classrun~main.
 
@@ -307,8 +304,8 @@ out->write( data = lt_flights name = 'lt_flight' ).
 
 DATA lv_valor_flightnum type i.
 LOOP AT lt_flights_info into data(ls_estructura).
-*lv_valor_flightnum = sy-tabix * 10.
 
+lv_valor_flightnum = sy-tabix * 10.
 
 MODIFY lt_flights_info FROM VALUE #(  aircode = 'CL'
                                           flightnum = lv_valor_flightnum
@@ -328,14 +325,61 @@ delete lt_flights_info INDEX lv_linea_vacia .
 
 out->write( data = lt_flights_info name = 'lt_flights_info (modificado)' ).
 
-*Lt_flights_info = VALUE #( FOR i = 16 THEN i + 1 UNTIL i > 30
-*(     iduser = | { 1234 + i } - USER |
-*               aircode = 'CL'
-*               flightnum = 0000 + 10 * i
-*               key = 'COP'
-*               seat = 0 + i
-*               flightdate = cl_abap_context_info=>get_system_date(  ) + 1 ) ).
+"2. FOR anidado
 
-*out->write( data = lt_flights name = 'lt_flights_info2' ).
+TYPES: BEGIN OF ty_mt_airline,
+         carrier_id        TYPE /dmo/connection-carrier_id,
+         connection_id TYPE /dmo/connection-connection_id,
+         airport_from_id   TYPE /dmo/connection-airport_from_id,
+       END OF ty_mt_airline.
+
+
+DATA: mt_flights_type TYPE TABLE OF /dmo/flight,
+      mt_airline TYPE TABLE OF ty_mt_airline,
+      lt_final TYPE sorted table of ty_flights with non-unique key aircode.
+
+
+SELECT
+ FROM /dmo/flight
+            fields *
+            into table @mt_flights_type.
+
+            SELECT
+            FROM /dmo/connection
+            FIELDS carrier_id, connection_id, airport_from_id
+            INTO TABLE @mt_airline.
+
+out->write( data = mt_flights_type name = 'mt_flights_type' ).
+out->write( data = mt_airline name = 'mt_airline' ).
+
+
+"3. Añadir múltiples líneas
+
+*TYPES: BEGIN OF ty_airlines,
+*       carrier_id type /dmo/carrier_id,
+*       connection_id type /dmo/connection_id,
+*       airport_from_id type /dmo/airport_from_id,
+*       airport_to_id type /dmo/airport_to_id,
+*              end of ty_airlines.
+*
+* data: mt_airlines TYPE TABLE OF ty_airlines.
+*
+*SELECT
+*FROM /dmo/m
+*
+
+
+
+*LOOP AT lt_flights into data(ls_flight).
+*
+*IF ls_flight-connection_id > '0401'.
+*ls_flight-connection_id = '4000'.
+*
+*MODIFY lt_flights from ls_flight INDEX 2.
+*
+*ENDIF.
+*
+*ENDLOOP
 endmethod.
+
 ENDCLASS.
