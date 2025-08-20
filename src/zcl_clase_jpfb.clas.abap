@@ -16,7 +16,7 @@ CLASS ZCL_CLASE_JPFB IMPLEMENTATION.
 
 METHOD if_oo_adt_classrun~main.
 
-out->write( 'hola mundo'  ). "esta linea imprime por consola"
+out->write( 'hola mundoooo'  ). "esta linea imprime por consola"
 
 ENDMETHOD.
 ENDCLASS.
