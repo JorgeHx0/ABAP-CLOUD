@@ -492,6 +492,72 @@ out->write( LO_EMPLOYEE->lv_name ).
 "llena automáticamente el constructor de esa clase pasando los importes
 "devuelve una referencia al objeto creado
 
+"""""""
+*DATA ref1 TYPE REF TO string.
+*CREATE DATA ref1 type string.
+*ref1->* = 'patata'.
+*
+*
+*out->write( ref1->* ).
+
+DATA: LV_int_value TYPE I VALUE 100,
+      Lv_ref_int TYPE REF TO i.
+
+      lv_ref_int = REF #( lv_int_value ).
+
+ out->write( data = lv_int_value name = 'original value' ).
+ out->write( data = lv_ref_int->* name = 'Value through reference' ).
+
+"""""repaso referencias
+
+
+*
+*select from /dmo/flight
+*FIELDS *
+*into table @data(lt_flight).
+*
+
+
+**ASSIGN lt_flight[ 2 ] TO FIELD-SYMBOL(<ls_flight>).
+**out->write( <ls_flight> ).
+*
+*
+**data(lr_flight) = ref #( lt_flight[ 1 ] ).
+**out->write( lr_flight ).
+*
+*data(lr_flight2) = ref #( lt_flight[ 100 ] optional ). "si la linea, en este ejemplo 100, NO existe lanza una excepcion (cx_sy-itab_line_not_found) y devuelve una referencia a una linea "inicial" (vacia).
+*out->write( lr_flight2 ).
+*
+*"(no funciona)" data(lor_persona) = new zcl_clase_tablas_der( FIRST_NAME = 'daniel' second_name = 'Elvira' ).
+*
+*DATA(lor_persona2) ref #( lor_persona ).
+
+
+ """""""""""""EJERCICIO
+
+ types: begin of ty_personal,
+        nombre type char13 ,
+        sueldo type p length 6 decimals 2,
+        experiencia type int1,
+        num_certificaciones type int1,
+        end of ty_personal.
+
+data: lt_personal TYPE TABLE OF ty_personal,
+ls_personal TYPE ty_personal.
+
+ls_personal = value #( nombre = 'Antonio' experiencia = 5 num_certificaciones = 2 ).
+append ls_personal to lt_personal.
+
+ls_personal = value #( nombre = 'Sara' experiencia = 7 num_certificaciones = 3 ).
+append ls_personal to lt_personal.
+
+out->write( lt_personal ).
+
+
+
+
+
+
 
 ENDMETHOD.
 ENDCLASS.
