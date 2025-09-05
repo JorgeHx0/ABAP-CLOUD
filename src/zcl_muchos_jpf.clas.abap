@@ -76,7 +76,7 @@ get time stamp field data(lv_timestamp_begin).
     data(lv_dif_sec) = cl_abap_tstmp=>subtract(  exporting tstmp1 = lv_timestamp_end
                                                             tstmp2 = lv_timestamp_begin ).
 
-
+out->write( | tiempo de ejecución { lv_dif_sec } | ).
 
 
 
