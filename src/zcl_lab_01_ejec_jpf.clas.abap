@@ -43,16 +43,14 @@ CLASS zcl_lab_01_ejec_jpf IMPLEMENTATION.
     "creamos el objeto a partir de una clase
     DATA(Lo_verdadero_o_falso) = NEW zcl_lab_05_flight_jpf(  ).
 
-    Lo_verdadero_o_falso->check_flight(
-     EXPORTING
-    iv_carrier_id = lv_carrier_id
-    iv_connexion_id = lv_conexion_id
-      RECEIVING rv_result = data(lv_bool) ).
+*    Lo_verdadero_o_falso->check_flight(
+*     EXPORTING
+*    iv_carrier_id = lv_carrier_id
+*    iv_connexion_id = lv_conexion_id
+*      RECEIVING rv_result = data(lv_bool) ).
 
-* "otra forma (CORREGIR, DA ERROR)
-* data(lv_bool) = Lo_verdadero_o_falso->check_flight( EXPORTING
-*        iv_carrier_id = 'AA'
-*        iv_connexion_id = '0018' ).
+ "otra forma
+ data(lv_bool) = Lo_verdadero_o_falso->check_flight( EXPORTING iv_carrier_id = 'AA' iv_connexion_id = '0018' ).
 
 
       out->write( lv_bool ).
@@ -69,6 +67,20 @@ DATA(go_elements) = NEW zcl_lab_06_elements_jpf( ).
     go_elements->set_object( exporting is_object = gs_object ).
 
     out->write( go_elements->ms_object ).
+
+"-----------------------------ejercicio 10 ver clase  zcl_lab_08_work_record
+
+zcl_lab_08_work_record=>open_new_record( exporting iv_date = cl_abap_context_info=>get_system_date(  )
+iv_first_name = 'John' iv_last_name = 'Smith' ).
+
+
+"---------------------ejercicio 11 de autorreferencia. ver clase zcl_lab_09_account_jpf
+
+data(go_account) = NEW zcl_lab_09_account_jpf(  ).
+
+go_account->set_iban( exporting iban = 'ES34 4355 8798 3453 9849' ).
+
+
 
   ENDMETHOD.
 ENDCLASS.

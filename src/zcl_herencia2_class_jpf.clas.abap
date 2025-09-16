@@ -1,0 +1,13 @@
+CLASS zcl_herencia2_class_jpf DEFINITION INHERITING FROM zcl_herencia_class_jpf
+  PUBLIC
+   CREATE PUBLIC.
+
+  PUBLIC SECTION.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_herencia2_class_jpf IMPLEMENTATION.
+ENDCLASS.
