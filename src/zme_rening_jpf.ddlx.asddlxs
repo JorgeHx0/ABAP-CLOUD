@@ -1,0 +1,89 @@
+@Metadata.layer: #CORE
+//ctrol espacio y shift enter
+@UI.headerInfo: {
+    typeName: 'coche',
+    typeNamePlural: 'coches',
+    typeImageUrl: '',
+    imageUrl: '',
+    title: {
+        type: #STANDARD,
+        label: '',
+        iconUrl: '',
+        criticality: '',
+        criticalityRepresentation: #WITHOUT_ICON,
+        value: 'Marca',
+        valueQualifier: '',
+        targetElement: '',
+        url: 'Url'
+    },
+    description: {
+        type: #STANDARD,
+        label: '',
+        iconUrl: '',
+        criticality: '',
+        criticalityRepresentation: #WITHOUT_ICON,
+        value: 'Modelo',
+        valueQualifier: '',
+        targetElement: '',
+        url: ''
+    }
+}
+annotate view zcds_as_rent_jpf
+    with 
+{
+@UI.facet: [{ id : 'DetachesVehiculo' , label: 'Detalles del vehiculo', type: #COLLECTION, position:10 },
+            { id : 'Vehiculo', parentId: 'DetallesVehiculo', label: 'Detalles' , type: #FIELDGROUP_REFERENCE, targetQualifier: 'DetachesVehiculo' , position:10},
+            { id : 'Cliente',   label: 'Cliente', type: #LINEITEM_REFERENCE, targetElement: '_DetCustomer', position: 20 }
+             ]
+            
+@UI.fieldGroup: [{ qualifier: 'DetachesVehiculo' , position: 10 }]
+Matricula;
+@UI.lineItem: [{ position:10 , importance: #HIGH}]
+Marca;
+@UI.lineItem: [{ position:20 , importance: #HIGH}]
+Modelo;
+@UI.lineItem: [{ position:30 , importance: #MEDIUM}]
+Color;
+@UI.lineItem: [{ position:40 , importance: #LOW}]
+Motor;
+@UI.lineItem: [{ position:50 , importance: #LOW}]
+Potencia;
+@UI.lineItem: [{ position:60 , importance: #HIGH}]
+Precio;
+@UI.lineItem: [{ position:70 , importance: #HIGH}]
+Moneda;
+@UI.lineItem: [{ position:80 , importance: #HIGH, label: 'Alquiler'}]
+Alquilado;
+ 
+ @UI.lineItem: [{ position:90 , importance: #HIGH, label: 'Tiempo restante', criticality: 'DiasRestantes'}]
+DiasRestantes; 
+ 
+ 
+ 
+@UI.fieldGroup: [{ qualifier: 'DetachesVehiculo' , position: 20 }]
+Combustible;
+ 
+@UI.fieldGroup: [{ qualifier: 'DetachesVehiculo' , position: 30 }]
+Consumo;
+ 
+@UI.fieldGroup: [{ qualifier: 'DetachesVehiculo' , position: 40 }]//Marca;
+Puertas;
+//Modelo;
+//Color;
+
+//Potencia;
+//UndPotencia;
+ 
+ 
+//Puertas;
+//Precio;
+//Moneda;
+//Alquilado;
+//AlqDesde;
+//AlqHasta;
+//DiasRestantes;
+//Url;
+///* Associations */
+//_DetCustomer;
+    
+}

@@ -7,6 +7,7 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
+
 define view entity ZCDS_JPF 
 as select from /dmo/flight
 { 
@@ -18,3 +19,4 @@ as select from /dmo/flight
     price as Price,
     currency_code as Currency
 }
+

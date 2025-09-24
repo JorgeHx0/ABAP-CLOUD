@@ -3,8 +3,7 @@
 {
 "FROM":
 [
-"/DMO/BOOKING",
-"/DMO/FLIGHT"
+"/DMO/FSA_ROOT_A"
 ],
 "ASSOCIATED":
 [],

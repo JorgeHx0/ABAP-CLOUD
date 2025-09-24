@@ -1,0 +1,14 @@
+@Metadata.layer: #CORE
+annotate view zcds_d_clientes_jpf
+    with 
+{
+@UI.lineItem: [{ position:10 , importance: #HIGH}]
+    Nombres;
+    @UI.lineItem: [{ position:10 , importance: #HIGH}]
+    Apellidos;
+    @UI.lineItem: [{ position:10 , importance: #HIGH}]
+    Email;
+    @UI.lineItem: [{ position:10 , importance: #HIGH, label : 'Tipo de contrato'}]
+    CntrType;
+    
+}

@@ -7,6 +7,7 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
+@Metadata.allowExtensions: true
 define view entity zcds_d_clientes_jpf as select from ztab_cstomer_jpf
 {
   key doc_id as DocId,

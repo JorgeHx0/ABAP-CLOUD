@@ -3,11 +3,12 @@
 {
 "FROM":
 [
-"/DMO/BOOKING",
-"/DMO/FLIGHT"
+"/DMO/BOOKING"
 ],
 "ASSOCIATED":
-[],
+[
+"ZCDS_REPASO10"
+],
 "BASE":
 [],
 "ANNO_REF":

@@ -9,19 +9,17 @@
 }
 define view entity ZCDS_CL2_JPF
 
- as select from /dmo/booking
-association [1..1] to   ZCDS_FILTRO2_JPF    as _Travel on _Travel.TravelId  = $projection.TravelId
+  as select from /dmo/booking
+  association [1..1] to ZCDS_FILTRO2_JPF as _Travel on _Travel.TravelId = $projection.TravelId
 {
-    key travel_id as TravelId,
-    key booking_id as BookinId,
-    
-   
-    
-    _Travel.AgencyId,
-     _Travel._Agency.name as AgencyName,
-     _Travel._Customer.customer_id as CustomerID,
-     concat_with_space(_Travel._Customer.first_name, _Travel._Customer.last_name, 2) as CustomerName
-     
-     
+  key travel_id                                                                       as TravelId,
+  key booking_id                                                                      as BookinId,
+      _Travel.AgencyId,
+      _Travel._Agency.name                                                            as AgencyName,
+      _Travel._Customer.customer_id                                                   as CustomerID,
+      concat_with_space(_Travel._Customer.first_name, _Travel._Customer.last_name, 2) as CustomerName
+
+
 }
-where carrier_id = 'AA';
+where
+  carrier_id = 'AA';

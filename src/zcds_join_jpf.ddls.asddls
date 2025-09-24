@@ -1,3 +1,13 @@
+//1. Joins
+//Crear la vista CDS “ZCDS_JOIN_USER” que combine las tablas
+///dmo/booking y /dmo/flight utilizando un inner join. Declarando los
+//siguientes campos en la vista CDS:
+//● BOOKING_ID: Como campo clave de la tabla /dmo/booking.
+//● FLIGHT_DATE: de la tabla /dmo/flight.
+//● PRICE: de la tabla /dmo/flight.
+//● CURRENCY_CODE: de la tabla /dmo/flight.
+
+
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'ejer join'
@@ -7,18 +17,20 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
-define view entity zcds_join_jpf 
-as select from /dmo/booking
-association [1..1] to /dmo/flight as _vuelos on _vuelos.carrier_id = $projection.CarrierID
-and _vuelos.connection_id = $projection.ConnectionID
-and _vuelos.flight_date =  $projection.Flight_date
+define view entity zcds_join_jpf
+  as select from /dmo/booking as booking
+ 
+  
+  inner join /dmo/flight as Flight on booking.connection_id = Flight.connection_id
+  
+  {
+      key booking.booking_id as Booking_ID,
+     Flight.flight_date as Flight_date,
+     @Semantics.amount.currencyCode: 'CurrencyCode'
+        Flight.price as Price,
+        Flight.currency_code as CurrencyCode
+  
+  
 
-{
-    key booking_id as Booking_ID,
-    flight_date as Flight_date,
-    //_vuelos.price as Price,
-    currency_code as Currency_Code,
-    connection_id as ConnectionID,
-    carrier_id as CarrierID
-    
+
 }

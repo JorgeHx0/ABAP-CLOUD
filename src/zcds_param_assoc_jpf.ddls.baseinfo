@@ -3,7 +3,7 @@
 {
 "FROM":
 [
-"/DMO/BOOKING",
+"/DMO/CARRIER",
 "/DMO/FLIGHT"
 ],
 "ASSOCIATED":
