@@ -13,6 +13,8 @@
 //para empezar desde una línea o solo traer cierta cantidad de valores
 //de la consulta.
 
+
+
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'ejer repaso'
