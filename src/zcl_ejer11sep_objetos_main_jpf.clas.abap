@@ -1,5 +1,5 @@
-"Finalidad: añadir una fila en la  BD combinando unos datos dados
-"con otros generados a partir de estos.
+"Finalidad: añadir una fila en la BD combinando unos datos dados con otros
+"generados a partir de estos. Se muestra por consola mensaje de confirmación o error.
 
 "se crea un objeto construido en la clase zcl_ejer11sep_objetos_constjpf.
 "Se invoca el método alta_empleado, que a su vez invoca a otros dos métodos.
@@ -33,7 +33,7 @@ CLASS zcl_ejer11sep_objetos_main_jpf IMPLEMENTATION.
     ).
 
 " llamamos a un método dentro del objeto (ver clase creadora) que se ejecuta hasta
-" encontrar su ENMETHOD, tras lo cual vuelve a esta clase después de donde lo dejó.
+" encontrar su ENDMETHOD, tras lo cual vuelve a esta clase después de donde lo dejó.
 "almacena el returning value en lv_alta.
   data(lv_alta) =  lo_employee->alta_empleado( ).
 
